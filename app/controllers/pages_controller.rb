@@ -3,4 +3,9 @@ class PagesController < ApplicationController
 
   def home
   end
+
+  def dashboard
+    @profile = Profile.find_by(user: current_user)
+
+  end
 end
