@@ -6,6 +6,6 @@ class PagesController < ApplicationController
 
   def dashboard
     @profile = Profile.find_by(user: current_user)
-
+    redirect_to profile_path(@profile)
   end
 end

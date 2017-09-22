@@ -12,6 +12,7 @@ gem 'redis'
 # add-ons GB
 gem 'money-rails'
 gem 'pundit'
+gem 'quovo'
 
 gem 'autoprefixer-rails'
 gem 'bootstrap-sass'

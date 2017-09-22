@@ -37,7 +37,8 @@ class CardsController < ApplicationController
   private
 
   def set_card
-    @card = card.find(params[:id])
+    @card = Card.find(params[:id])
+    authorize @card
   end
 
   def card_params

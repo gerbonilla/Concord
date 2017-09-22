@@ -2,7 +2,8 @@ class TransactionsController < ApplicationController
   before_action :set_transaction, only: [:show]
 
   def index
-    @transactions = Transaction.all
+    @transactions = policy_scope(Transaction)
+
   end
 
   def show
@@ -26,6 +27,7 @@ class TransactionsController < ApplicationController
 
   def set_transaction
     @transaction = Transaction.find(params[:id])
+    authorize @transaction
   end
 
 end

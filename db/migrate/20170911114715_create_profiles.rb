@@ -7,6 +7,7 @@ class CreateProfiles < ActiveRecord::Migration[5.1]
       t.string :address
       t.string :transfer_pin
       t.string :language
+      t.boolean :active, default: false
 
       t.timestamps
     end
