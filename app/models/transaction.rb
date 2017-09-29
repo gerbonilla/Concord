@@ -1,12 +1,8 @@
 class Transaction < ApplicationRecord
-  belongs_to :account
+  belongs_to :portfolio
 
-  monetize :amount_cents
-
-
-  # validates :account, presence: true
-  # validates :date_posted, presence: true
-  # validates :status, presence: true
-  # validates :description, presence: true
-  # validates :source, presence: true
+  monetize :fees_cents
+  monetize :fx_rate_cents
+  monetize :price_cents
+  monetize :value_cents
 end

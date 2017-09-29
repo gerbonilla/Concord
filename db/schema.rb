@@ -10,31 +10,72 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170911120521) do
+ActiveRecord::Schema.define(version: 20170928111446) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
+    t.integer "brokerage_id"
+    t.string "brokerage_name"
+    t.integer "quovo_id"
+    t.boolean "is_inactive"
+    t.string "last_good_sync"
+    t.string "nickname"
+    t.string "opened"
     t.bigint "profile_id"
-    t.integer "account_number"
-    t.integer "balance_cents", default: 0
-    t.string "iban"
+    t.integer "value_cents", default: 0, null: false
+    t.string "value_currency", default: "USD", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["profile_id"], name: "index_accounts_on_profile_id"
   end
 
-  create_table "cards", force: :cascade do |t|
+  create_table "portfolios", force: :cascade do |t|
     t.bigint "account_id"
-    t.string "card_number"
-    t.integer "cvv"
-    t.date "expiration"
-    t.boolean "locked", default: true
-    t.integer "pin"
+    t.string "brokerage_name"
+    t.string "description"
+    t.integer "quovo_id"
+    t.boolean "is_inactive"
+    t.boolean "is_taxable"
+    t.string "last_change"
+    t.string "nickname"
+    t.string "owner_type"
+    t.string "portfolio_category"
+    t.string "portfolio_name"
+    t.string "portfolio_type"
+    t.string "portfolio_type_confidence"
+    t.integer "value_cents", default: 0, null: false
+    t.string "value_currency", default: "USD", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_cards_on_account_id"
+    t.index ["account_id"], name: "index_portfolios_on_account_id"
+  end
+
+  create_table "positions", force: :cascade do |t|
+    t.bigint "portfolio_id"
+    t.string "asset_class"
+    t.float "cost_basis"
+    t.string "cost_basis_type"
+    t.string "currency"
+    t.string "cusip"
+    t.float "fx_rate"
+    t.integer "quovo_id"
+    t.string "last_purchase_date"
+    t.float "price"
+    t.float "quantity"
+    t.string "sector"
+    t.string "security_type"
+    t.string "security_type_confidence"
+    t.string "ticker"
+    t.string "ticker_name"
+    t.integer "value_cents", default: 0, null: false
+    t.string "value_currency", default: "USD", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "sac1"
+    t.string "sac2"
+    t.index ["portfolio_id"], name: "index_positions_on_portfolio_id"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -51,15 +92,31 @@ ActiveRecord::Schema.define(version: 20170911120521) do
   end
 
   create_table "transactions", force: :cascade do |t|
-    t.date "date_posted"
-    t.string "status"
-    t.bigint "account_id"
-    t.integer "amount_cents", default: 0
-    t.string "description"
-    t.string "source"
+    t.bigint "portfolio_id"
+    t.string "currency"
+    t.string "cusip"
+    t.string "date"
+    t.string "expense_category"
+    t.integer "fees_cents", default: 0, null: false
+    t.string "fees_currency", default: "USD", null: false
+    t.integer "fx_rate_cents", default: 0, null: false
+    t.string "fx_rate_currency", default: "USD", null: false
+    t.integer "quovo_id"
+    t.boolean "is_cancel"
+    t.boolean "is_pending"
+    t.string "memo"
+    t.integer "price_cents", default: 0, null: false
+    t.string "price_currency", default: "USD", null: false
+    t.float "quantity"
+    t.string "ticker"
+    t.string "ticker_name"
+    t.string "tran_category"
+    t.string "tran_type"
+    t.integer "value_cents", default: 0, null: false
+    t.string "value_currency", default: "USD", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_transactions_on_account_id"
+    t.index ["portfolio_id"], name: "index_transactions_on_portfolio_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -81,7 +138,8 @@ ActiveRecord::Schema.define(version: 20170911120521) do
   end
 
   add_foreign_key "accounts", "profiles"
-  add_foreign_key "cards", "accounts"
+  add_foreign_key "portfolios", "accounts"
+  add_foreign_key "positions", "portfolios"
   add_foreign_key "profiles", "users"
-  add_foreign_key "transactions", "accounts"
+  add_foreign_key "transactions", "portfolios"
 end

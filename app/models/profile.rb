@@ -1,6 +1,8 @@
 class Profile < ApplicationRecord
   belongs_to :user
-  has_many :accounts
+  has_many :accounts, dependent: :destroy
+  has_many :portfolios, through: :accounts
+  has_many :positions, through: :portfolios
 
   # validates :user, presence: true
   # validates :address, presence: true
