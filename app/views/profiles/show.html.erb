@@ -11,20 +11,35 @@
     </div>
     <% end %>
   </div>
-  <% Position::ASSET_CLASSES.each do |l1_key, l1_value| %>
-  <div class="row sac1">
-    <div class="col-xs-2"><%= l1_key.to_s.gsub('_', " ") %></div>
-  </div>
-    <% l1_value.each do |l2_key, l2_value| %>
-      <div class="row sac2">
-        <div class="col-xs-2">&nbsp<%= l2_key.to_s.gsub('_', " ") %></div>
-      </div>
-      <% l2_value.each do |l3_value| %>
-        <div class="row sac3">
-          <div class="col-xs-2">&nbsp&nbsp<%= l3_value %></div>
-        </div>
-      <% end %>
+  <div class="row">
+    <div class="col-xs-2">
+      <!-- Leave blank intentionally -->
+    </div>
+    <% @profile.accounts.each do |acct| %>
+    <% acct.portfolios.each do |portfolio| %>
+    <div class="col-xs-1">
+      <p><%= portfolio.portfolio_name %></p>
+    </div>
     <% end %>
+    <% end %>
+  </div>
+  <% Position::ASSET_CLASSES.each do |sac1, sac2_values| %>
+  <div class="row sac1">
+    <div class="col-xs-2"><%= sac1.to_s.gsub('_', " ") %></div>
+    <div class="col-xs-1"><%= money_without_cents Money.new(@asset_class[sac1.to_s.gsub('_', " ")]) %></div>
+  </div>
+  <% sac2_values.each do |sac2, sac3_values| %>
+  <div class="row sac2">
+    <div class="col-xs-2">&nbsp<%= sac2.to_s.gsub('_', " ") %></div>
+    <div class="col-xs-1"><%= money_without_cents Money.new(@asset_class[sac2.to_s.gsub('_', " ")]) %></div>
+  </div>
+  <% sac3_values.each do |sac3| %>
+  <div class="row sac3">
+    <div class="col-xs-2">&nbsp&nbsp<%= sac3 %></div>
+    <div class="col-xs-1"><%= money_without_cents Money.new(@asset_class[sac3.to_s.gsub('_', " ")]) %></div>
+  </div>
+  <% end %>
+  <% end %>
   <% end %>
 </div>
 

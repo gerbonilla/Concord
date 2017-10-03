@@ -2,19 +2,7 @@ class ProfilesController < ApplicationController
   before_action :set_profile, only: [:show, :edit, :update]
 
   def show
-    # Build accounts array
-    @accounts = []
-    portfolios = []
-    positions = []
-    asset_class = {}
-    # Build positions array
-    @positions = {}
-    # Quovo.positions.for_user(current_user.quovo_user_id).each do |p|
-    #   @positions[p.asset_class].nil? ? @positions[p.asset_class] = p.value : @positions[p.asset_class] += p.value
-    # end
-
-    # Build asset_class array per account
-
+    @asset_class = sum_asset_classes(@profile)
     @token = Quovo.iframe_token.create(current_user.quovo_user_id).token
     @quovo_user = current_user.quovo_user_id
   end
@@ -23,6 +11,7 @@ class ProfilesController < ApplicationController
   end
 
   def update
+    # need to sync up quovo
     # current_user.portfolios.destroy_all
     current_user.profile.accounts.destroy_all
     Quovo.accounts.for_user(current_user.quovo_user_id).each do |account|
@@ -83,8 +72,18 @@ class ProfilesController < ApplicationController
     authorize @profile
   end
 
-  def profile_params
-    # params.require(:profile).permit()
+  def sum_asset_classes(profile)
+    asset_class = {}
+    Position::ASSET_CLASSES.select do |sac1, sac2_values|
+      asset_class[sac1.to_s.gsub('_', " ")] = profile.positions.where(sac1: sac1.to_s.gsub('_', " ")).sum(:value_cents)
+      sac2_values.each do |sac2, sac3_values|
+        asset_class[sac2.to_s.gsub('_', " ")] = profile.positions.where(sac2: sac2.to_s.gsub('_', " ")).sum(:value_cents)
+        sac3_values.each do |sac3|
+          asset_class[sac3.to_s.gsub('_', " ")] = profile.positions.where(asset_class: sac3.to_s.gsub('_', " ")).sum(:value_cents)
+        end
+      end
+    end
+    return asset_class
   end
 
 end
