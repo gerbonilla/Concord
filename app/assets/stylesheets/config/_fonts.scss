@@ -2,8 +2,11 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,300,700|Raleway:400,100,300,700,500");
 
 // Define fonts for body and headers
-$body-font: "Montserrat", "Helvetica", "sans-serif";
-$headers-font: "Raleway", "Helvetica", "sans-serif";
+// $body-font: "Montserrat", "Helvetica", "sans-serif";
+// $headers-font: "Raleway", "Helvetica", "sans-serif";
+
+$body-font: "Calibri", "Helvetica", "sans-serif";
+$headers-font: "Calibri", "Helvetica", "sans-serif";
 
 // To use a font file (.woff) uncomment following lines
 // @font-face {

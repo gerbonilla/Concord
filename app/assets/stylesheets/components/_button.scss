@@ -1,10 +1,31 @@
 .btn-no-bg {
-
+  background-color: white;
+  color: $concord-color;
+  border: 1px solid $concord-color;
+  font-weight: normal;
+  width: 167px;
+  padding: 9px 12px;
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 .btn-concord-bg {
   background-color: $concord-color;
   color: white;
-  font-weight: lighter;
-  width: 320px;
+  font-weight: normal;
+  width: 167px;
+  padding: 9px 12px;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.search-btn {
+  width: 100%;
+}
+
+.small-margin {
+  margin: 5px;
 }
