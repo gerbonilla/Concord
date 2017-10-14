@@ -12,6 +12,7 @@ class CreateTransactions < ActiveRecord::Migration[5.1]
       t.boolean :is_cancel
       t.boolean :is_pending
       t.string :memo
+      t.string :location
       t.monetize :price
       t.float :quantity
       t.string :ticker

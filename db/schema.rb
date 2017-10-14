@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 20170928111446) do
     t.boolean "is_cancel"
     t.boolean "is_pending"
     t.string "memo"
+    t.string "location"
     t.integer "price_cents", default: 0, null: false
     t.string "price_currency", default: "USD", null: false
     t.float "quantity"

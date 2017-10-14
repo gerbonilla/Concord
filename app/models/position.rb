@@ -1,8 +1,8 @@
 class Position < ApplicationRecord
   ASSET_CLASSES = {
     Equities: {
-      US_Equity: ["Equity", "Giant Cap Equity", "Large Cap Equity", "Mid Cap Equity", "Small Cap Equity", "Micro Cap Equity"],
-      Foreign_Equity: ["Foreign Equity", "Giant Cap Foreign", "Large Cap Foreign", "Mid Cap Foreign", "Small Cap Foreign", "Micro Cap Foreign"],
+      US_Equities: ["Equity", "Giant Cap Equity", "Large Cap Equity", "Mid Cap Equity", "Small Cap Equity", "Micro Cap Equity"],
+      Foreign_Equities: ["Foreign Equity", "Giant Cap Foreign", "Large Cap Foreign", "Mid Cap Foreign", "Small Cap Foreign", "Micro Cap Foreign", "European Equity ETFs"],
       Other: ["ETF", "Other Equity"]
     },
     Alternatives: {

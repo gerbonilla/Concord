@@ -1,0 +1,25 @@
+.dashboard-button-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+a.toggle-btn {
+  background-color: white;
+  text-decoration: none;
+  padding: 9px 35px;
+  color: gray;
+  border: 1px solid gray;
+  border-radius: 4px;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+  a.active {
+    background-color: lightgray;
+  }
+
+#welcome-header {
+  margin-top: 0px;
+}

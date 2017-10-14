@@ -7,3 +7,4 @@ gerardo_profile = Profile.find_by(user: gerardo)
 gerardo_profile.update(first_name: 'Gerardo', last_name: 'Bonilla', address: 'Stargarder Str. 72', transfer_pin: '3333', language: 'english')
 diego_profile = Profile.find_by(user: diego)
 diego_profile.update(first_name: 'Diego', last_name: 'Bonilla', address: 'Stargarder Str. 72', transfer_pin: '3333', language: 'english')
+# Position.all.each { |p| p.set_sac }
