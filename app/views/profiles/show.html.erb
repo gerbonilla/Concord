@@ -1,18 +1,25 @@
 <h3 class="text-center" id="welcome-header">Welcome <%= @profile.first_name %></h3>
 
 <!-- search bar -->
-<form action="#" class="concord-form form-inline">
+<!-- <form action="#" class="concord-form form-inline" data-remote="true">
   <div class="form-group">
     <input type="text" class="form-control" id="search-bar">
     <input type="submit" value="Go" class="btn btn-concord-bg search-btn form-control" id="go-btn">
   </div>
 </form>
+ -->
+<%= form_tag(profile_path(@profile), method: "get", class: "concord-form form-inline", remote: true) do %>
+  <div class="form-group">
+  <%= text_field_tag(:search, "", class: "form-control", id: "search-bar") %>
+  <%= submit_tag("Go", class: "btn btn-concord-bg search-btn form-control", id: "go-btn") %>
+  </div>
+<% end %>
 <br>
 
 <!-- update and connect buttons -->
 <div class="dashboard-button-wrapper">
 <div class="small-margin" id="quovo-widget"></div>
-<%= link_to "Update Accounts", profile_path(@profile), method: :put, class: "btn btn-no-bg small-margin" %>
+<%= link_to "Update Accounts", profile_accounts_path(@profile), method: :put, class: "btn btn-no-bg small-margin" %>
 </div>
 <br>
 
