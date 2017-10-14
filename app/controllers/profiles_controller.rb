@@ -2,16 +2,19 @@ class ProfilesController < ApplicationController
   before_action :set_profile, only: [:show, :edit, :update]
 
   def show
-    @asset_class = sum_asset_classes(@profile)
-    @token = Quovo.iframe_token.create(current_user.quovo_user_id).token
-    @quovo_user = current_user.quovo_user_id
-    @grand_total = @profile.portfolios.sum(:value_cents)
-  end
+    @search = search_intent(params[:search]) unless params[:search].blank?
+    respond_to do |format|
+      format.html {
+        @asset_class = sum_asset_classes(@profile)
+        @token = Quovo.iframe_token.create(current_user.quovo_user_id).token
+        @quovo_user = current_user.quovo_user_id
+        @grand_total = @profile.portfolios.sum(:value_cents)
+      }
+        format.js  # <-- will render `app/views/reviews/create.js.erb`
+      end
+    end
 
-  def edit
-  end
-
-  def update
+    def update
     # need to sync up quovo
     current_user.profile.accounts.destroy_all
     current_user.profile.portfolios.destroy_all
@@ -96,6 +99,15 @@ class ProfilesController < ApplicationController
     authorize @profile
   end
 
+  def search_intent(search)
+    words = search.gsub('?', '').split(" ")
+    if words.include?("allocation")
+      return "Asset Allocation"
+    else
+      return "No Answer"
+    end
+  end
+
   def sum_asset_classes(profile)
     asset_class = {}
     profile.portfolios.each do |portfolio|
@@ -109,18 +121,18 @@ class ProfilesController < ApplicationController
           end
         end
       end
-  end
-  Position::ASSET_CLASSES.select do |sac1, sac2_values|
-    asset_class[:total] = {} if asset_class[:total].blank?
-    asset_class[:total][sac1.to_s.gsub('_', " ")] = profile.positions.where(sac1: sac1.to_s.gsub('_', " ")).sum(:value_cents)
-    sac2_values.each do |sac2, sac3_values|
-      asset_class[:total][sac2.to_s.gsub('_', " ")] = profile.positions.where(sac2: sac2.to_s.gsub('_', " ")).sum(:value_cents)
-      sac3_values.each do |sac3|
-        asset_class[:total][sac3.to_s.gsub('_', " ")] = profile.positions.where(asset_class: sac3.to_s.gsub('_', " ")).sum(:value_cents)
+    end
+    Position::ASSET_CLASSES.select do |sac1, sac2_values|
+      asset_class[:total] = {} if asset_class[:total].blank?
+      asset_class[:total][sac1.to_s.gsub('_', " ")] = profile.positions.where(sac1: sac1.to_s.gsub('_', " ")).sum(:value_cents)
+      sac2_values.each do |sac2, sac3_values|
+        asset_class[:total][sac2.to_s.gsub('_', " ")] = profile.positions.where(sac2: sac2.to_s.gsub('_', " ")).sum(:value_cents)
+        sac3_values.each do |sac3|
+          asset_class[:total][sac3.to_s.gsub('_', " ")] = profile.positions.where(asset_class: sac3.to_s.gsub('_', " ")).sum(:value_cents)
+        end
       end
     end
+    return asset_class
   end
-  return asset_class
-end
 
 end

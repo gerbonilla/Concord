@@ -1,0 +1,7 @@
+console.log("<%= @search %>");
+// if ("<%= @search %>" = "Asset Allocation") {
+//   $('.cas').removeClass('hidden');
+// }
+<% if @search == "Asset Allocation" %>
+$('.cas').removeClass('hidden');
+<% end %>

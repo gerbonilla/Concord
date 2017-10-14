@@ -1,7 +1,9 @@
-<%= render 'shared/cas_value' %>
-<%= render 'shared/cas_percentage' %>
-<br>
-<div class="value-or-percent-buttons text-center">
-  <%= link_to "$","#", class: "toggle-btn active", id: "value-btn" %>
-  <%= link_to "%","#", class: "toggle-btn", id: "percentage-btn" %>
+<div class="cas hidden">
+  <%= render 'shared/cas_value' %>
+  <%= render 'shared/cas_percentage' %>
+  <br>
+  <div class="value-or-percent-buttons text-center">
+    <%= link_to "$","#", class: "toggle-btn active", id: "value-btn" %>
+    <%= link_to "%","#", class: "toggle-btn", id: "percentage-btn" %>
+  </div>
 </div>
