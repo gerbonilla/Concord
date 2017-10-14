@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   root to: 'pages#home'
 
   resources :profiles, only: [:show, :new, :create, :edit, :update, :destroy] do
-    resources :cards, only: [:show, :new, :create, :edit, :update, :destroy]
+    resources :portfolios, only: [:show, :new, :create, :edit, :update, :destroy]
     resources :accounts, only: [:show, :new, :create, :edit, :update, :destroy]
     resources :transactions, only: [:index, :show, :new, :create]
   end

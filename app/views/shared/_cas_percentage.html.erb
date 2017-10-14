@@ -1,0 +1,122 @@
+<div class="container cas-percentage text-center hidden">
+  <div class="row">
+    <% if @profile.portfolios.size < 9 %>
+    <% offset = (9 - @profile.portfolios.size) / 2 %>
+    <div class="col-xs-<%= offset %>"></div>
+    <% end %>
+    <div class="col-xs-2">
+      <!-- Leave blank intentionally -->
+    </div>
+    <% @profile.accounts.each do |account| %>
+    <div class="col-xs-<%= account.portfolios.count %>">
+      <p class="text-center"><%= account.brokerage_name %></p>
+    </div>
+    <% end %>
+  </div>
+  <div class="row">
+    <% if @profile.portfolios.size < 9 %>
+    <% offset = (9 - @profile.portfolios.size) / 2 %>
+    <div class="col-xs-<%= offset %>"></div>
+    <% end %>
+    <div class="col-xs-2">
+      <!-- Leave blank intentionally -->
+    </div>
+    <% @profile.portfolios.each do |portfolio| %>
+    <div class="col-xs-1">
+      <p><%= portfolio.portfolio_name %></p>
+    </div>
+    <% end %>
+    <div class="col-xs-1">
+      <p>Total</p>
+    </div>
+  </div>
+
+  <!-- Asset Class Iteration -->
+  <% Position::ASSET_CLASSES.each do |sac1, sac2_values| %>
+
+  <!-- SAC 1 -->
+  <% if @asset_class[:total][sac1.to_s.gsub('_', " ")] != 0 %>
+  <div class="row">
+    <% if @profile.portfolios.size < 9 %>
+    <% offset = (9 - @profile.portfolios.size) / 2 %>
+    <div class="col-xs-<%= offset %>"></div>
+    <% end %>
+    <div class="col-xs-2 sac1 text-left">
+      <%= sac1.to_s.gsub('_', " ") %>
+    </div>
+    <% @profile.portfolios.each do |port| %>
+    <div class="col-xs-1 sac1" name="value-<%= port.portfolio_name.last(4) %>">
+      <%= number_to_percentage((@asset_class[port.portfolio_name][sac1.to_s.gsub('_', " ")].to_f / port.value_cents.to_f) * 100, precision: 0)  %>
+    </div>
+    <% end %>
+    <div class="col-xs-1 sac1" name="value-total">
+      <%= number_to_percentage((@asset_class[:total][sac1.to_s.gsub('_', " ")].to_f / @grand_total.to_f) * 100, precision: 0) %>
+    </div>
+  </div>
+  <% end %>
+
+  <!-- SAC 2 -->
+  <% sac2_values.each do |sac2, sac3_values| %>
+  <% if @asset_class[:total][sac2.to_s.gsub('_', " ")] != 0 %>
+  <div class="row">
+    <% if @profile.portfolios.size < 9 %>
+    <% offset = (9 - @profile.portfolios.size) / 2 %>
+    <div class="col-xs-<%= offset %>"></div>
+    <% end %>
+    <div class="col-xs-2 sac2 text-left">
+      &nbsp<%= sac2.to_s.gsub('_', " ") %>
+    </div>
+    <% @profile.portfolios.each do |port| %>
+    <div class="col-xs-1 sac2" name="value-<%= port.portfolio_name.last(4) %>">
+      <%= number_to_percentage((@asset_class[port.portfolio_name][sac2.to_s.gsub('_', " ")].to_f / port.value_cents.to_f) * 100, precision: 0) %>
+    </div>
+    <% end %>
+    <div class="col-xs-1 sac2" name="value-total">
+      <%= number_to_percentage((@asset_class[:total][sac2.to_s.gsub('_', " ")].to_f / @grand_total.to_f) * 100, precision: 0) %>
+    </div>
+  </div>
+  <% end %>
+
+  <!-- SAC 3 -->
+  <% sac3_values.each do |sac3| %>
+  <% if @asset_class[:total][sac3.to_s.gsub('_', " ")] != 0 %>
+  <div class="row">
+    <% if @profile.portfolios.size < 9 %>
+    <% offset = (9 - @profile.portfolios.size) / 2 %>
+    <div class="col-xs-<%= offset %>"></div>
+    <% end %>
+    <div class="col-xs-2 sac3 text-left">
+      &nbsp&nbsp<%= sac3 %>
+    </div>
+    <% @profile.portfolios.each do |port| %>
+    <div class="col-xs-1 sac3" name="value-<%= port.portfolio_name.last(4) %>">
+      <%= number_to_percentage((@asset_class[port.portfolio_name][sac3.to_s.gsub('_', " ")].to_f / port.value_cents.to_f) * 100, precision: 0) %>
+    </div>
+    <% end %>
+    <div class="col-xs-1 sac3" name="value-total">
+      <%= number_to_percentage((@asset_class[:total][sac3.to_s.gsub('_', " ")].to_f / @grand_total.to_f) * 100, precision: 0) %>
+    </div>
+  </div>
+  <% end %>
+  <% end %>
+  <% end %>
+  <% end %>
+
+  <!-- Total Row at bottoms -->
+  <div class="row">
+    <% if @profile.portfolios.size < 9 %>
+    <% offset = (9 - @profile.portfolios.size) / 2 %>
+    <div class="col-xs-<%= offset %>"></div>
+    <% end %>
+    <div class="col-xs-2 total-row text-left">Total </div>
+    <% @profile.portfolios.each do |port| %>
+    <div class="col-xs-1 total-row" name="total-<%= port.portfolio_name.last(4) %>">
+      <%= money_without_cents_and_with_symbol Money.new(port.total_value_cents) %>
+    </div>
+    <% end %>
+    <div class="col-xs-1 total-row" name="total-total">
+      <%= money_without_cents_and_with_symbol Money.new(@grand_total) %>
+    </div>
+  </div>
+</div>
+<br><br>
