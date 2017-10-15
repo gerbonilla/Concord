@@ -3,6 +3,7 @@ class ProfilesController < ApplicationController
 
   def show
     @search = search_intent(params[:search]) unless params[:search].blank?
+    Search.create(text: params[:search], profile: @profile)
     respond_to do |format|
       format.html {
         @asset_class = sum_asset_classes(@profile)
