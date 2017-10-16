@@ -1,0 +1,23 @@
+<h2 id="transactions-header">Below are your latest transactions.</h2>
+
+<% @profile.transactions.sort_by { |t| t.date }.reverse.each do |transaction| %>
+  <div class="message">
+    <div class="message-name">
+      <h3 <%= "class= red-color" if transaction.value_cents < 0 %>><%= humanized_money_with_symbol transaction.value %></h3>
+      <p><%=  Date.parse(transaction.date).strftime("%m/%d/%Y")  %></p>
+    </div>
+    <div class="message-body">
+      <p><strong><%= transaction.portfolio.brokerage_name %> <%= transaction.portfolio.portfolio_name %></strong></p>
+      <p>
+        <%= transaction.ticker unless transaction.ticker.blank? %>
+        <%= transaction.memo %>
+      </p>
+    </div>
+    <div class="message-status">
+      <p class="price"><%= transaction.tran_type %></p>
+    </div>
+  </div>
+<% end %>
+
+
+<br><br>

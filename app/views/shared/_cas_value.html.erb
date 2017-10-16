@@ -35,6 +35,7 @@
   <% Position::ASSET_CLASSES.each do |sac1, sac2_values| %>
 
   <!-- SAC 1 -->
+
   <% if @asset_class[:total][sac1.to_s.gsub('_', " ")] != 0 %>
   <div class="row">
     <% if @profile.portfolios.size < 9 %>

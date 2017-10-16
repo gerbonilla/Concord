@@ -1,7 +1,50 @@
-console.log("<%= @search %>");
-// if ("<%= @search %>" = "Asset Allocation") {
-//   $('.cas').removeClass('hidden');
-// }
-<% if @search == "Asset Allocation" %>
-$('.cas').removeClass('hidden');
+// search is submitted on Profile#show page
+
+// first make answer wrapper empty
+$('.answer-wrapper').empty()
+
+// determine which answer to render
+
+// "No Answer" - render Answer Not Found
+<% if @search == "No Answer" %>
+  var new_answer = $("<%= j render 'shared/answer_not_found' %>").hide();
+  $('.answer-wrapper').append(new_answer);
+  new_answer.slideDown();
 <% end %>
+
+// "Transactions" - render Transactions
+<% if @search == "Transactions" %>
+  var new_answer = $("<%= j render 'shared/transactions' %>").hide();
+  $('.answer-wrapper').append(new_answer);
+  new_answer.slideDown();
+<% end %>
+
+// "Asset allocation" - render CAS
+<% if @search == "Asset Allocation" %>
+  var new_answer = $("<%= j render 'shared/cas' %>").hide();
+  $('.answer-wrapper').append(new_answer);
+  new_answer.slideDown();
+<% end %>
+
+
+
+
+
+// OTHER JS - this is additional JS to be carried out in specific intents
+
+// toggle % and $ buttons for cas
+$('.toggle-btn').click(function(event) {
+  event.preventDefault();
+  console.log("clicked");
+  $('.toggle-btn').removeClass('active');
+  $(this).addClass('active');
+  if ($(this)[0].id == "percentage-btn") {
+    $('.cas-value').addClass('hidden');
+    $('.cas-percentage').removeClass('hidden');
+  }
+  if ($(this)[0].id == "value-btn") {
+    $('.cas-percentage').addClass('hidden');
+    $('.cas-value').removeClass('hidden');
+  }
+});
+

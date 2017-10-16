@@ -4,12 +4,12 @@ class ProfilesController < ApplicationController
   def show
     @search = search_intent(params[:search]) unless params[:search].blank?
     Search.create(text: params[:search], profile: @profile)
+    @asset_class = sum_asset_classes(@profile)
+    @token = Quovo.iframe_token.create(current_user.quovo_user_id).token
+    @quovo_user = current_user.quovo_user_id
+    @grand_total = @profile.portfolios.sum(:value_cents)
     respond_to do |format|
       format.html {
-        @asset_class = sum_asset_classes(@profile)
-        @token = Quovo.iframe_token.create(current_user.quovo_user_id).token
-        @quovo_user = current_user.quovo_user_id
-        @grand_total = @profile.portfolios.sum(:value_cents)
       }
         format.js  # <-- will render `app/views/reviews/create.js.erb`
       end
@@ -20,6 +20,7 @@ class ProfilesController < ApplicationController
     current_user.profile.accounts.destroy_all
     current_user.profile.portfolios.destroy_all
     current_user.profile.positions.destroy_all
+    current_user.profile.transactions.destroy_all
     Quovo.accounts.for_user(current_user.quovo_user_id).each do |account|
       new_acct = Account.create!(brokerage_id: account.brokerage,
         brokerage_name: account.brokerage_name,
@@ -104,6 +105,8 @@ class ProfilesController < ApplicationController
     words = search.gsub('?', '').split(" ")
     if words.include?("allocation")
       return "Asset Allocation"
+    elsif words.any? { |word| ["transaction", "transactions", "expense", "expenses"].include? word }
+      return "Transactions"
     else
       return "No Answer"
     end

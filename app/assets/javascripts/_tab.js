@@ -1,7 +1,7 @@
 $(document).ready(function() {
   $('.toggle-btn').click(function(event) {
     event.preventDefault();
-    console.log("clicked")
+    console.log("clicked");
     $('.toggle-btn').removeClass('active');
     $(this).addClass('active');
     if ($(this)[0].id == "percentage-btn") {
