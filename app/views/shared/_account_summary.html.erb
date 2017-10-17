@@ -1,5 +1,7 @@
 <h2 id="transactions-header">Below are your linked accounts.</h2>
-
+<% if @profile.accounts.blank? %>
+<h2>No accounts connected.</h2>
+<% else %>
 <% @profile.accounts.each do |account| %>
 <div class="message parent-message" id="<%= account.quovo_id %>">
   <div class="message-name">
@@ -35,7 +37,7 @@
 </div>
 <% end %>
 <% end %>
-
+<% end %>
 <br><br>
 
 <%= content_for :after_js do %>
