@@ -1,0 +1,48 @@
+<h2 id="transactions-header">Below are your linked accounts.</h2>
+
+<% @profile.accounts.each do |account| %>
+<div class="message parent-message" id="<%= account.quovo_id %>">
+  <div class="message-name">
+    <p><%=  Date.parse(account.last_good_sync).strftime("%m/%d/%Y")  %></p>
+  </div>
+  <div class="message-body">
+    <p><strong><%= account.brokerage_name %></strong></p>
+    <p>
+      <%= pluralize(account.portfolios.size, 'portfolio') %>
+    </p>
+  </div>
+  <div class="message-status">
+    <h3 <%= "class= red-color" if account.value_cents < 0 %>><%= humanized_money_with_symbol account.value %></h3>
+  </div>
+</div>
+
+<% account.portfolios.each do |portfolio| %>
+<div class="message portfolio-<%= account.quovo_id %>" style="display: none;">
+  <div class="message-name">
+    <p><%= portfolio.portfolio_type %></p>
+    <p><%=  Date.parse(portfolio.last_change).strftime("%m/%d/%Y")  %></p>
+  </div>
+  <div class="message-body">
+    <p><strong><%= portfolio.brokerage_name %> <%= portfolio.portfolio_name %></strong></p>
+    <p>
+      <%= portfolio.is_taxable? ? "Taxable Account" : "Tax-Deferred Account" %> -
+      <%= portfolio.owner_type %>
+    </p>
+  </div>
+  <div class="message-status">
+    <h3 <%= "class= red-color" if portfolio.value_cents < 0 %>><%= humanized_money_with_symbol portfolio.value %></h3>
+  </div>
+</div>
+<% end %>
+<% end %>
+
+<br><br>
+
+<%= content_for :after_js do %>
+<script>
+  $('.parent-message').click(function(event) {
+    $(".portfolio-" + this.id).slideToggle();
+  })
+</script>
+
+<% end %>

@@ -1,0 +1,10 @@
+<%  %>
+<div class="jumbotron">
+  <div class="container">
+    <h1>You have paid a total of <%= humanized_money_with_symbol Money.new(@profile.transactions.sum(:fees_cents)) %> in fees.</h1>
+    <% @profile.portfolios.each do |portfolio| %>
+      <p><span class="badge"><%= humanized_money_with_symbol Money.new(portfolio.transactions.sum(:fees_cents)) %></span>  <%= portfolio.brokerage_name %>-<%= portfolio.portfolio_name %></p>
+    <% end %>
+  </div>
+</div>
+<br><br>

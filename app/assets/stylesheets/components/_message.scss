@@ -8,6 +8,16 @@
   border-radius: 5px;
   background-color: $concord-color-low-opacity;
 }
+.parent-message {
+  background-color: $concord-color;
+  color: white;
+  .message-body {
+    color: rgba(255,255,255,0.6);
+  }
+  .message-body strong{
+    color: rgba(255,255,255,0.9);
+  }
+}
 
 .red-color {
   color: $red;

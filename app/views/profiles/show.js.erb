@@ -26,6 +26,19 @@ $('.answer-wrapper').empty()
   new_answer.slideDown();
 <% end %>
 
+// "Account Summary" - render Account Summary
+<% if @search == "Account Summary" %>
+  var new_answer = $("<%= j render 'shared/account_summary' %>").hide();
+  $('.answer-wrapper').append(new_answer);
+  new_answer.slideDown();
+<% end %>
+
+// "Fees" - render Fees
+<% if @search == "Fees" %>
+  var new_answer = $("<%= j render 'shared/fees' %>").hide();
+  $('.answer-wrapper').append(new_answer);
+  new_answer.slideDown();
+<% end %>
 
 
 
@@ -47,4 +60,9 @@ $('.toggle-btn').click(function(event) {
     $('.cas-value').removeClass('hidden');
   }
 });
+
+// account summary functionality
+  $('.parent-message').click(function(event) {
+    $(".portfolio-" + this.id).slideToggle();
+  })
 

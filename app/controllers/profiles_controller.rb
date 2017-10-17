@@ -66,7 +66,7 @@ class ProfilesController < ApplicationController
               ticker_name: position.ticker_name,
               value_cents: position.value.nil? ? 0 : position.value * 100)
           end
-          Quovo.history.for_portfolio(portfolio.id, count:10).each do |transaction|
+          Quovo.history.for_portfolio(portfolio.id, count:100).each do |transaction|
             Transaction.create!(portfolio: new_portfolio,
               currency: transaction.currency,
               cusip: transaction.cusip,
@@ -105,8 +105,12 @@ class ProfilesController < ApplicationController
     words = search.gsub('?', '').split(" ")
     if words.include?("allocation")
       return "Asset Allocation"
-    elsif words.any? { |word| ["transaction", "transactions", "expense", "expenses"].include? word }
+    elsif words.include?("fees")
+      return "Fees"
+    elsif words.any? { |word| ["transaction", "spend", "transactions", "expense", "expenses"].include? word }
       return "Transactions"
+    elsif ["balance", "balances", "how much money"].any? { |word| words.join(" ").include? word }
+      return "Account Summary"
     else
       return "No Answer"
     end
