@@ -3,7 +3,6 @@ class ProfilesController < ApplicationController
 
   def show
     @search = search_intent(params[:search]) unless params[:search].blank?
-    Search.create(text: params[:search], profile: @profile)
     @asset_class = sum_asset_classes(@profile)
     @token = Quovo.iframe_token.create(current_user.quovo_user_id).token
     @quovo_user = current_user.quovo_user_id
@@ -11,7 +10,9 @@ class ProfilesController < ApplicationController
     respond_to do |format|
       format.html {
       }
-        format.js  # <-- will render `app/views/reviews/create.js.erb`
+      format.js {
+        Search.create(text: params[:search], profile: @profile)
+        } # <-- will render `app/views/reviews/create.js.erb`
       end
     end
 
